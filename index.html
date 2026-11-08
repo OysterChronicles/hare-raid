@@ -44,6 +44,28 @@
   .credit { color: rgba(255,255,255,.9); font-size: 13px; letter-spacing: .5px; text-shadow: 0 1px 0 rgba(0,0,0,.45); }
   .help { color: #fff; font-size: 14px; background: rgba(0,0,0,.28); border-radius: 14px; padding: 10px 16px; max-width: 680px; text-align: center; line-height: 1.45; }
 
+  #boards { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(10,20,30,.55); z-index: 5; }
+  #boards.show { display: flex; }
+  .card.wide { min-width: min(460px, 92vw); max-height: 92vh; overflow-y: auto; }
+  .btabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 6px 0 10px; }
+  .btabs button { border: 2px solid #a8642c; background: #fff; color: #6b3a16; border-radius: 12px; width: 40px; height: 36px; font-weight: 700; font-size: 16px; }
+  .btabs button.on { background: #a8642c; color: #fff; }
+  .btitle { font-weight: 700; color: #6b3a16; margin-bottom: 4px; }
+  .lbsub { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+  .lbsub input { font-family: inherit; font-size: 17px; padding: 8px 12px; border-radius: 12px; border: 2px solid #c9a27a; width: 170px; background: #fff; color: #3c2a1a; }
+  .lbsub input:focus { outline: none; border-color: #4c9b2a; }
+  .big.small { padding: 8px 14px; font-size: 16px; }
+  .big:disabled { opacity: .55; cursor: default; }
+  .lbstatus { min-height: 20px; font-size: 14px; color: #8a6a4a; margin-bottom: 4px; }
+  .lblist { list-style: none; margin: 0 auto 14px; padding: 0; max-width: 360px; text-align: left; }
+  .lblist li { display: grid; grid-template-columns: 30px 1fr auto auto; gap: 8px; align-items: center; padding: 5px 10px; border-radius: 10px; font-size: 15px; color: #3c2a1a; }
+  .lblist li:nth-child(odd) { background: rgba(168,100,44,.08); }
+  .lblist li.me { background: #fff1b8; box-shadow: inset 0 0 0 2px #ffc61a; }
+  .lblist .rk { font-weight: 700; color: #a8642c; }
+  .lblist .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lblist .sc { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .lblist .st { color: #ffc61a; font-size: 13px; letter-spacing: 1px; text-shadow: 0 1px 0 #a86f00; }
+  #btnBoards { background: #ffc61a; color: #5a2e12; border: 2px solid #fff; border-radius: 20px; padding: 6px 14px; font-size: 14px; font-weight: 700; box-shadow: 0 3px 0 #a86f00; }
   #modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(10,20,30,.45); }
   #modal.show { display: flex; }
   .card { background: linear-gradient(#fff7e8, #f1dcc0); border: 5px solid #fff; border-radius: 26px; padding: 22px 34px 26px; text-align: center; box-shadow: 0 10px 0 #7a4a22, 0 20px 40px rgba(0,0,0,.35); min-width: 280px; animation: pop .35s cubic-bezier(.2,1.6,.4,1); }
@@ -79,7 +101,7 @@
   <div class="sub">The foxes have raided the carrot stores. Fling your rabbits, flatten their forts.</div>
   <div id="levels"></div>
   <div class="help">Drag the rabbit back from the slingshot and let go to launch. Tap (or press Space) mid-flight to use a special ability.<br>Clear every fox to win. Unused rabbits score 10,000 each. Press R to restart a level.</div>
-  <div class="foot"><span id="totalStars"></span><button id="btnReset">Reset progress</button></div>
+  <div class="foot"><span id="totalStars"></span><button id="btnBoards">🏆 Leaderboards</button><button id="btnReset">Reset progress</button></div>
   <div class="brand">
     <a class="wa" href="https://wa.me/6580880224?text=Hi%20PaperWings%20Studios%2C%20I%20played%20Hare%20Raid%20and%20would%20like%20to%20enquire." target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></svg>
@@ -89,12 +111,29 @@
   </div>
 </div>
 
+<div id="boards">
+  <div class="card wide">
+    <h2>🏆 Leaderboards</h2>
+    <div id="bTabs" class="btabs"></div>
+    <div id="bTitle" class="btitle"></div>
+    <div id="bStatus" class="lbstatus"></div>
+    <ol id="bList" class="lblist"></ol>
+    <div class="row"><button class="big alt" id="bClose">Close</button></div>
+  </div>
+</div>
+
 <div id="modal">
   <div class="card">
     <h2 id="mTitle"></h2>
     <div id="mStars"></div>
     <div id="mScore"></div>
     <div id="mBest"></div>
+    <div id="lbSubmit" class="lbsub">
+      <input id="lbName" maxlength="16" placeholder="Your nickname" autocomplete="nickname" spellcheck="false">
+      <button class="big small" id="lbSend">Post score</button>
+    </div>
+    <div id="lbStatus" class="lbstatus"></div>
+    <ol id="lbList" class="lblist"></ol>
     <div class="row">
       <button class="big alt" id="mMenu">Levels</button>
       <button class="big alt" id="mRetry">Retry</button>
@@ -1247,7 +1286,7 @@ function release() {
 cv.addEventListener('pointerup', release);
 cv.addEventListener('pointercancel', () => { if (G) G.drag = null; });
 window.addEventListener('keydown', e => {
-  if (!G) return;
+  if (!G || (e.target && e.target.tagName === 'INPUT')) return;
   if (e.key === ' ' && G.state === 'flying') { useAbility(); e.preventDefault(); }
   if (e.key === 'r' || e.key === 'R') startLevel(G.level);
 });
@@ -1291,9 +1330,74 @@ function showModal(won, stars) {
   }
   $('mNext').style.display = won && G.level < LEVELS.length - 1 ? '' : 'none';
   $('mStars').style.display = won ? '' : 'none';
+  setupWinBoard(won, stars);
   m.classList.add('show');
 }
 function hideModal() { $('modal').classList.remove('show'); }
+
+// ---------- Global leaderboard (Supabase) ----------
+const SB_URL = 'https://vjwlcakfwtoqwqnbsamv.supabase.co';
+const SB_KEY = 'sb_publishable_IjdQ6yp0_KueAJlcXZLL4g_MdxBtGF0'; // publishable key: safe in the browser; writes only via checked submit_score()
+const NAME_RE = /^[A-Za-z0-9 _.-]{1,16}$/;
+async function sbRpc(fn, body) {
+  const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 8000);
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+    const txt = await r.text(); let data = null; try { data = JSON.parse(txt); } catch (e) {}
+    if (!r.ok) throw new Error((data && data.message) || ('HTTP ' + r.status));
+    return data;
+  } finally { clearTimeout(to); }
+}
+function getNick() { try { return localStorage.getItem('hareRaid.nick') || ''; } catch (e) { return ''; } }
+function setNick(n) { try { localStorage.setItem('hareRaid.nick', n); } catch (e) {} }
+const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function renderList(el, rows, me) {
+  if (!rows || !rows.length) { el.innerHTML = '<li><span></span><span class="nm">No scores yet. Be the first!</span></li>'; return; }
+  el.innerHTML = rows.map((r, i) => `<li class="${me && r.name.toLowerCase() === me.toLowerCase() ? 'me' : ''}"><span class="rk">${i + 1}</span><span class="nm">${esc(r.name)}</span><span class="st">${'★'.repeat(r.stars)}</span><span class="sc">${Number(r.score).toLocaleString('en-GB')}</span></li>`).join('');
+}
+async function loadBoard(level, listEl, statusEl, me) {
+  statusEl.textContent = 'Loading scores…'; listEl.innerHTML = '';
+  try { const rows = await sbRpc('top_scores', { p_level: level + 1 }); statusEl.textContent = ''; renderList(listEl, rows, me); }
+  catch (e) { statusEl.textContent = 'Leaderboard is unavailable right now (it works on the published website).'; }
+}
+let lbPosted = false;
+function setupWinBoard(won, stars) {
+  const show = won ? '' : 'none';
+  $('lbSubmit').style.display = show; $('lbList').style.display = show; $('lbStatus').style.display = show;
+  if (!won) return;
+  lbPosted = false; G.lastStars = stars;
+  $('lbName').value = getNick(); $('lbSend').disabled = false; $('lbSend').textContent = 'Post score';
+  loadBoard(G.level, $('lbList'), $('lbStatus'), getNick());
+}
+async function postScore() {
+  if (lbPosted || !G) return;
+  const name = $('lbName').value.trim();
+  if (!NAME_RE.test(name)) { $('lbStatus').textContent = 'Use 1–16 letters, numbers, spaces, dots, dashes or underscores.'; return; }
+  setNick(name); $('lbSend').disabled = true; $('lbStatus').textContent = 'Posting…';
+  try {
+    await sbRpc('submit_score', { p_level: G.level + 1, p_name: name, p_score: G.score, p_stars: G.lastStars || 1 });
+    lbPosted = true; $('lbSend').textContent = 'Posted ✓';
+    await loadBoard(G.level, $('lbList'), $('lbStatus'), name);
+    $('lbStatus').textContent = 'Score posted!';
+  } catch (e) {
+    $('lbSend').disabled = false;
+    $('lbStatus').textContent = /too many/i.test(e.message) ? 'Too many posts for this name. Try again in a few minutes.' : 'Could not post the score (it works on the published website).';
+  }
+}
+$('lbSend').onclick = () => { sfx('click'); postScore(); };
+$('lbName').addEventListener('keydown', e => { if (e.key === 'Enter') postScore(); e.stopPropagation(); });
+let boardLevel = 0;
+function openBoards(level) {
+  boardLevel = level || 0;
+  const tabs = $('bTabs'); tabs.innerHTML = '';
+  LEVELS.forEach((lv, i) => { const b = document.createElement('button'); b.textContent = i + 1; b.title = lv.name; if (i === boardLevel) b.className = 'on'; b.onclick = () => { sfx('click'); openBoards(i); }; tabs.appendChild(b); });
+  $('bTitle').textContent = `Level ${boardLevel + 1}: ${LEVELS[boardLevel].name}`;
+  $('boards').classList.add('show');
+  loadBoard(boardLevel, $('bList'), $('bStatus'), getNick());
+}
+$('btnBoards').onclick = () => { audioInit(); sfx('click'); openBoards(0); };
+$('bClose').onclick = () => { sfx('click'); $('boards').classList.remove('show'); };
+
 
 $('btnRestart').onclick = () => { sfx('click'); if (G) startLevel(G.level); };
 $('btnMenu').onclick = () => { sfx('click'); showMenu(); };

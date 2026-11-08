@@ -41,6 +41,17 @@ Later updates: replace `index.html`, commit and push. Vercel redeploys automatic
 | Flemish Giant | None (very heavy) | Stone |
 | Dutch Thumper | Shockwave | Everything nearby |
 
+## Global leaderboard (Supabase)
+
+- After clearing a level, players can enter a nickname (1–16 letters, numbers, spaces, `.`, `-`, `_`) and post their score.
+- The top 10 per level (best score per nickname) appear on the win screen and under **🏆 Leaderboards** on the level menu.
+- Backend: Supabase project **Hare Raid** (organisation GT, region ap-southeast-1, Singapore).
+  - Table `public.scores` is read-only to the public (row-level security on, direct writes revoked).
+  - New scores go only through the `submit_score()` function, which checks the level, nickname, score range (0–200,000) and stars, and limits each nickname to 5 posts per level every 10 minutes.
+  - Rankings come from `top_scores(level)`.
+- The page uses the project's **publishable** key, which is designed to be public. Never put the secret/service-role key in this file.
+- Scores are not cheat-proof: a determined player could post a fake score within the allowed range. To remove an entry, delete its row in the Supabase Table Editor.
+
 ## Notes
 
 - Progress (unlocked levels, stars and best scores) is saved in the player's own browser. It does not sync between devices, and clearing browser data resets it.
