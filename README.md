@@ -8,11 +8,22 @@ A PaperWings Studios Production.
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | The whole game in one file (physics engine, art, sound and levels included; no external files needed) |
-| `vercel.json` | Vercel settings for a static site |
+| `index.html` | The whole game (physics engine, art, sound and levels included) |
+| `manifest.webmanifest` | App details for installing: name, icons, full screen, landscape |
+| `sw.js` | Service worker: lets the game play offline |
+| `icons/` | App icons (including a maskable icon for Android and an Apple touch icon) |
+| `fonts/` | Fredoka font files (SIL Open Font License), so text looks right offline |
+| `vercel.json` | Vercel settings, including headers for the service worker and manifest |
 | `README.md` | This file |
 
-The page loads one optional web font (Fredoka) from Google Fonts. If it cannot load, the game falls back to the system font and still works.
+## Installing as an app
+
+- **Android (Chrome):** open the site and tap **📲 Install app** on the menu (or the browser's Install prompt).
+- **iPhone/iPad (Safari):** tap **Share**, then **Add to Home Screen**. The menu's **📲 Add to Home Screen** button shows this tip.
+- **Desktop Chrome/Edge:** use the **📲 Install app** button or the install icon in the address bar.
+- Once installed, it opens full screen and plays offline. Leaderboards still need internet.
+- Updates arrive automatically the next time the app is opened online.
+
 
 ## Deploy to Vercel
 
