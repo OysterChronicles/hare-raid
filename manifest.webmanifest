@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "Hare Raid",
+  "short_name": "Hare Raid",
+  "description": "Fling rabbits, flatten fox forts. A slingshot physics game by PaperWings Studios.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#1e8ef5",
+  "theme_color": "#1e8ef5",
+  "categories": ["games", "entertainment"],
+  "lang": "en-GB",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
